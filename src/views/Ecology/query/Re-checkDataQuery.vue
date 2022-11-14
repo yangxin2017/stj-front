@@ -159,15 +159,15 @@ export default {
         { label: "起始时间", prop: "stime", open: true, time: true },
         { label: "结束时间", prop: "etime", open: true, time: true },
 
-        { label: "平均速度", prop: "aveSpeed", open: true, width: 90 },
-        { label: "最大瞬时速度", prop: "maxSpeed", open: false },
-        { label: "出行里程", prop: "tripLength", open: true, type: 'number', width: 90 },
-        { label: "行程时间", prop: "tripDuraion", open: true, width: 90 },
+        { label: "平均速度(m/s)", prop: "aveSpeed", open: true, width: 90 },
+        { label: "最大瞬时速度(m/s)", prop: "maxSpeed", open: false },
+        { label: "出行里程(m)", prop: "tripLength", open: true, type: 'number', width: 90 },
+        { label: "行程时间(s)", prop: "tripDuraion", open: true, width: 90 },
 
-        { label: "核验出行里程", prop: "tripCheckLength", open: true, type: 'number' },
-        { label: "碳减排量", prop: "csend", open: true, type: 'number' },
-        { label: "基准碳排放量", prop: "cbaseSend", open: true, type: 'number' },
-        { label: "项目碳排放量", prop: "cprojectSend", open: true, type: 'number' },
+        { label: "核验出行里程(m)", prop: "tripCheckLength", open: true, type: 'number' },
+        { label: "碳减排量(g)", prop: "csend", open: true, type: 'number' },
+        { label: "基准碳排放量(g)", prop: "cbaseSend", open: true, type: 'number' },
+        { label: "项目碳排放量(g)", prop: "cprojectSend", open: true, type: 'number' },
         { label: "碳减排量(复核)", prop: "csendRight", open: true, type: 'number' },
 
         { label: "起始线路编号", prop: "slineCode", open: false },

@@ -1,4 +1,3 @@
-
 <template>
   <div class="monitor-table-list-class">
     <el-button type="text" class="resultbutton" @click="$parent.tableBol = -1">
@@ -60,7 +59,12 @@
         class="search-form-class"
         clearable
       >
-        <el-option v-for="item in tripType" :key="item.value" :label="item.label" :value="item.value"></el-option>
+        <el-option
+          v-for="item in tripType"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+        ></el-option>
       </el-select>
       出发时间：
       <el-date-picker
@@ -99,12 +103,12 @@
         size="mini"
         class="search-form-class"
       ></el-input> -->
-      <el-button type="primary" size="mini" @click="searchClick">
-        查询
-      </el-button>
+      <el-button type="primary" size="mini" @click="searchClick"> 查询 </el-button>
       <el-button type="primary" size="mini" @click="outClick"> 导出 </el-button>
       <el-divider direction="vertical"></el-divider>
-      <el-button type="primary" size="mini" @click="handleShowCondition"> 筛选条件 </el-button>
+      <el-button type="primary" size="mini" @click="handleShowCondition">
+        筛选条件
+      </el-button>
     </div>
 
     <el-table
@@ -112,7 +116,8 @@
       style="width: 100%"
       class="table-class"
       height="calc(100% - 137px)"
-      stripe v-loading="loading"
+      stripe
+      v-loading="loading"
     >
       <!-- <el-table-column prop="id" label="序号" width="100"> -->
       <el-table-column label="序号" width="100">
@@ -125,25 +130,13 @@
           <!-- <el-button type="text" size="mini" @click="handleClick(scope.row)">
             查看
           </el-button> -->
-          <el-button
-            type="text"
-            size="mini"
-            @click="setStatus(scope.row, '删除')"
-          >
+          <el-button type="text" size="mini" @click="setStatus(scope.row, '删除')">
             删除
           </el-button>
-          <el-button
-            type="text"
-            size="mini"
-            @click="setStatus(scope.row, '忽略')"
-          >
+          <el-button type="text" size="mini" @click="setStatus(scope.row, '忽略')">
             忽略
           </el-button>
-          <el-button
-            type="text"
-            size="mini"
-            @click="setStatus(scope.row, '待确认')"
-          >
+          <el-button type="text" size="mini" @click="setStatus(scope.row, '待确认')">
             待确认
           </el-button>
         </template>
@@ -159,7 +152,9 @@
           <template slot-scope="scope">
             <div class="table-column">
               <span v-if="item.type == 'time'">{{ getTimeU(scope.row[item.prop]) }}</span>
-              <span v-else-if="item.type == 'number'">{{ scope.row[item.prop].toFixed(2) }}</span>
+              <span v-else-if="item.type == 'number'">{{
+                Number(scope.row[item.prop]).toFixed(2)
+              }}</span>
               <span v-else>{{ scope.row[item.prop] }}</span>
             </div>
           </template>
@@ -167,11 +162,14 @@
       </template>
     </el-table>
 
-    <div class="pages" style="margin: 15px 0 0 0;text-align: center;">
+    <div class="pages" style="margin: 15px 0 0 0; text-align: center">
       <el-pagination
-        background :page-size="pageSize"
+        background
+        :page-size="pageSize"
         layout="prev, pager, next"
-        :total="total" @current-change="handleChangePage">
+        :total="total"
+        @current-change="handleChangePage"
+      >
       </el-pagination>
     </div>
   </div>
@@ -179,16 +177,16 @@
 
 <script>
 import { getRecheckErrList, setRecheckStatus, getErrTotal } from "@/api/recheck";
-import { getTripTypes } from '@/api/public'
+import { getTripTypes } from "@/api/public";
 export default {
   props: {
     datasource: {
       type: String,
-      default: '',
+      default: "",
     },
     groupDate: {
       type: String,
-      default: '',
+      default: "",
     },
   },
   // 组件内数据
@@ -207,23 +205,23 @@ export default {
         error: 0,
         yx: 0,
         total: 0,
-        str: ''
+        str: "",
       },
       tableHeader: [
         { label: "出行方式", prop: "tripType", open: true },
-        { label: "起始时间", prop: "stime", open: false, type: 'time' },
-        { label: "结束时间", prop: "etime", open: false, type: 'time' },
-        { label: "平均速度", prop: "aveSpeed", open: true },
+        { label: "起始时间", prop: "stime", open: false, type: "time" },
+        { label: "结束时间", prop: "etime", open: false, type: "time" },
+        { label: "平均速度(m/s)", prop: "aveSpeed", open: true },
         { label: "最大瞬时速度", prop: "maxSpeed", open: false },
-        { label: "出行里程", prop: "tripLength", open: true },
-        { label: "行程时间", prop: "tripDuraion", open: true },
-        { label: "核验出行里程", prop: "tripCheckLength", open: true },
-        { label: "碳减排量", prop: "csend", open: true, type: 'number' },
-        { label: "基准碳排放量", prop: "cbaseSend", open: true, type: 'number' },
-        { label: "项目碳排放量", prop: "cprojectSend", open: true, type: 'number' },
-
+        { label: "出行里程(m)", prop: "tripLength", open: true },
+        { label: "行程时间(s)", prop: "tripDuraion", open: true },
+        { label: "核验出行里程(m)", prop: "tripCheckLength", open: true, type: "number" },
+        { label: "基准碳排放量(g)", prop: "cbaseSend", open: true, type: "number" },
+        { label: "项目碳排放量(g)", prop: "cprojectSend", open: true, type: "number" },
+        { label: "核证碳减排量(g)", prop: "csend", open: true, type: "number" },
         
-        { label: "碳减排量(复核)", prop: "csendRight", open: true, type: 'number' },
+        { label: "碳减排量(复核)L", prop: "csendLeft", open: true, type: "number" },
+        { label: "碳减排量(复核)R", prop: "csendRight", open: true, type: "number" },
 
         { label: "起始线路编号", prop: "slineCode", open: false },
         { label: "起始线路方向", prop: "slineDir", open: false },
@@ -249,41 +247,44 @@ export default {
       errorType: ["C_ERROR"],
       loading: false,
 
-      showCondition: false
+      showCondition: false,
     };
   },
   // 实例被挂载后调用
   mounted() {
     this.errorinit();
-    this.init()
+    this.init();
   },
   // 定义函数
   methods: {
     handleShowCondition() {
-      this.showCondition = true
+      this.showCondition = true;
     },
     handleHideCondition() {
-      this.showCondition = false
+      this.showCondition = false;
     },
     async init() {
-      let obj = await getTripTypes({})
-      this.tripType = obj.data
+      let obj = await getTripTypes({});
+      this.tripType = obj.data;
 
-      let objtotal = await getErrTotal({ datasource: this.datasource, groupDate: this.groupDate })
-      this.errTotal = objtotal.data
-      let time = objtotal.data.time
-      let str = ''
+      let objtotal = await getErrTotal({
+        datasource: this.datasource,
+        groupDate: this.groupDate,
+      });
+      this.errTotal = objtotal.data;
+      let time = objtotal.data.time;
+      let str = "";
       if (time) {
-        let arr = time.split('-')
+        let arr = time.split("-");
         if (arr.length > 1) {
-          str = `${objtotal.data.datasource}${arr[0]}年${arr[1]}月`
+          str = `${objtotal.data.datasource}${arr[0]}年${arr[1]}月`;
         }
       }
-      this.errTotal.str = str
+      this.errTotal.str = str;
     },
     handleChangePage(ev) {
-      this.pageIndex = ev
-      this.errorinit()
+      this.pageIndex = ev;
+      this.errorinit();
     },
     errorinit() {
       // let tableBol = {};
@@ -291,7 +292,7 @@ export default {
       //   tableBol[i] = false;
       // }
       let tableData = [];
-      this.loading = true
+      this.loading = true;
       // for (let i of this.errorType) {
       getRecheckErrList({
         datasource: this.datasource,
@@ -300,14 +301,14 @@ export default {
         etime: this.searchform.etime,
         pageIndex: this.pageIndex,
         pageSize: this.pageSize,
-        groupDate: this.groupDate
+        groupDate: this.groupDate,
       }).then((res) => {
         tableData = res.data.data;
-        this.total = res.data.total
-        
-        this.tableData = tableData
-        console.log(this.tableData)
-        this.loading = false
+        this.total = res.data.total;
+
+        this.tableData = tableData;
+        console.log(this.tableData);
+        this.loading = false;
         // tableData[i] = res.data.data;
         // // tableBol[i] = true;
         // // 如果tableBol所有值均为true
@@ -325,21 +326,21 @@ export default {
       }
     },
     searchClick() {
-      this.errorinit()
+      this.errorinit();
     },
     outClick() {
       let fm = {
         tripType: this.searchform.tripType,
         stime: this.searchform.stime,
         etime: this.searchform.etime,
-        groupDate: this.groupDate
-      }
-      let url = `/stj/fh/errexport?`
+        groupDate: this.groupDate,
+      };
+      let url = `/stj/fh/errexport?`;
       for (let k in fm) {
-        url += `${k}=${fm[k]}&`
+        url += `${k}=${fm[k]}&`;
       }
-      console.log(url)
-      window.open(url)
+      console.log(url);
+      window.open(url);
     },
     getTimeU(time) {
       if (time == "--") {
@@ -355,17 +356,18 @@ export default {
     },
     getWidth(prop) {
       // 获取tableData中prop的文字最多的字数
-      let max = 16;
-      for (let i of this.tableData) {
-        if (i[prop]) {
-          if (i[prop].length > max) {
-            max = i[prop].length;
-          }
-        } else {
-          return "200";
-        }
-      }
-      return max * 12;
+      // let max = 16;
+      // for (let i of this.tableData) {
+      //   if (i[prop]) {
+      //     if (i[prop].length > max) {
+      //       max = i[prop].length;
+      //     }
+      //   } else {
+      //     return "200";
+      //   }
+      // }
+      // return max * 12;
+      return "";
     },
     setStatus(row, status) {
       setRecheckStatus({
@@ -416,10 +418,12 @@ export default {
     position: absolute;
     z-index: 999;
     box-shadow: 0 0 10px #fff;
-    .close{
+    .close {
       position: absolute;
-      top: 10px;right: 10px;
-      color: #fff;cursor: pointer;
+      top: 10px;
+      right: 10px;
+      color: #fff;
+      cursor: pointer;
       font-size: 18px;
     }
   }

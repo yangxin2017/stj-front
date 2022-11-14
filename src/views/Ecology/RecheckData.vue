@@ -62,7 +62,13 @@
       </el-row>
 
       <div class="table-class">
-        <el-table :data="recheckData" width="100%" height="100%" stripe v-loading="loading">
+        <el-table
+          :data="recheckData"
+          width="100%"
+          height="100%"
+          stripe
+          v-loading="loading"
+        >
           <el-table-column label="序号" width="100">
             <template slot-scope="scope">
               <span>{{ scope.$index + 1 }}</span>
@@ -76,8 +82,11 @@
               <span v-else-if="scope.row.flow">
                 {{ getNodeStr(scope.row.flow) }}
               </span>
-              <span v-if="scope.row.status == '复核计算中'" :class="{'flash-txt': scope.row.status == '复核计算中' }">
-              {{ scope.row.status }}
+              <span
+                v-if="scope.row.status == '复核计算中'"
+                :class="{ 'flash-txt': scope.row.status == '复核计算中' }"
+              >
+                {{ scope.row.status }}
               </span>
             </template>
           </el-table-column>
@@ -97,10 +106,18 @@
           </el-table-column>
           <el-table-column label="操作">
             <template slot-scope="scope">
-              <el-button type="text" v-if="!scope.row.flow || scope.row.flow.curNodeStep == 2" @click="recheck(scope.row, scope.index)">
-                {{ scope.row.status == '未复核' ? '复核' : '重新复核' }}
+              <el-button
+                type="text"
+                v-if="!scope.row.flow || scope.row.flow.curNodeStep == 2"
+                @click="recheck(scope.row, scope.index)"
+              >
+                {{ scope.row.status == "未复核" ? "复核" : "重新复核" }}
               </el-button>
-              <el-button type="text" v-if="scope.row.flow && scope.row.flow.curNodeStep == 2" @click="submit(scope.row.flow)">
+              <el-button
+                type="text"
+                v-if="scope.row.flow && scope.row.flow.curNodeStep == 2"
+                @click="submit(scope.row.flow)"
+              >
                 提交
               </el-button>
             </template>
@@ -111,7 +128,9 @@
         <el-pagination
           background
           layout="prev, pager, next"
-          :total="total" @current-change="handleChangePage">
+          :total="total"
+          @current-change="handleChangePage"
+        >
         </el-pagination>
       </div>
     </template>
@@ -122,23 +141,27 @@
     <el-dialog title="提示" :visible.sync="dialogVisible" width="400px">
       <el-row class="demo-autocomplete">
         <el-col :span="24">
-          <div class="sub-title" style="margin: 0 0 10px 0;">请输入内容：</div>
-          
-          <el-input v-model="state1" placeholder="请输入内容"></el-input>
+          <div class="sub-title" style="margin: 0 0 10px 0">请输入内容：</div>
 
+          <el-input v-model="state1" placeholder="请输入内容"></el-input>
         </el-col>
       </el-row>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="handleBH">确 定</el-button>
       </span>
     </el-dialog>
-
   </div>
 </template>
 
 <script>
 import Tablelist from "./recheck/Tablelist";
-import { getcheckList, getRecheckList, setRecheck, addFlow, nextFlow } from "@/api/recheck";
+import {
+  getcheckList,
+  getRecheckList,
+  setRecheck,
+  addFlow,
+  nextFlow,
+} from "@/api/recheck";
 export default {
   components: {
     Tablelist,
@@ -146,23 +169,23 @@ export default {
   data() {
     return {
       searchform: {
-        datasource: '',
-        groupDate: '',
+        datasource: "",
+        groupDate: "",
         pageIndex: 1,
-        pageSize: 10
+        pageSize: 10,
       },
       total: 0,
       recheckData: [],
 
       tableBol: -1,
       fileId: -1,
-      datasource: '',
-      groupDate: '',
+      datasource: "",
+      groupDate: "",
       loading: true,
 
       dialogVisible: false,
-      state1: '',
-      flowId: ''
+      state1: "",
+      flowId: "",
     };
   },
   mounted() {
@@ -170,18 +193,18 @@ export default {
   },
   methods: {
     async init() {
-      this.loading = true
-      let res = await getcheckList(this.searchform)
+      this.loading = true;
+      let res = await getcheckList(this.searchform);
       this.recheckData = res.data.data;
-      this.total = res.data.total
-      this.loading = false
+      this.total = res.data.total;
+      this.loading = false;
     },
     handleSearch() {
-      this.init()
+      this.init();
     },
     handleChangePage(ev) {
-      this.searchform.pageIndex = ev
-      this.init()
+      this.searchform.pageIndex = ev;
+      this.init();
     },
     async recheck(row, index) {
       // const lod = this.$loading({
@@ -190,44 +213,47 @@ export default {
       //   spinner: 'el-icon-loading',
       //   background: 'rgba(0, 0, 0, 0.7)'
       // })
-      this.$message.success('复核正在进行！')
+      this.$message.success("复核正在进行！");
       let recheckres = await setRecheck({
         datasource: row.datasource,
         dstr: row.groupDate,
-      })
-      lod.close()
+      });
+      lod.close();
       addFlow({ taskId: recheckres.data.id }).then((flowres) => {
-        this.init()
-      })
+        this.init();
+      });
     },
     handleBH() {
       nextFlow({
         flowId: this.flowId,
-        reason: this.state1
+        reason: this.state1,
       }).then(() => {
         this.init();
         this.$message.success("提交成功");
-        this.dialogVisible = false
+        this.dialogVisible = false;
       });
     },
     submit(row) {
-      this.flowId = row.id
-      this.dialogVisible = true
-      this.state1 = ''
+      this.flowId = row.id;
+      this.dialogVisible = true;
+      this.state1 = "";
     },
     errorRow(row) {
       // this.fileId = row.flow.id;
-      if (row.flow) {
-        this.groupDate = row.groupDate
-        this.datasource = row.datasource
-        this.tableBol = 1
-      } else {
-        this.$message.error('请先复核数据')
-      }
+      this.groupDate = row.groupDate;
+      this.datasource = row.datasource;
+      this.tableBol = 1;
+      // if (row.flow) {
+      //   this.groupDate = row.groupDate
+      //   this.datasource = row.datasource
+      //   this.tableBol = 1
+      // } else {
+      //   this.$message.error('请先复核数据')
+      // }
     },
     getTimeU(time) {
       if (!time) {
-        return '--'
+        return "--";
       }
       if (time == "--") {
         return time;
@@ -242,17 +268,17 @@ export default {
     },
     getNodeStr(flow) {
       if (flow.curNodeStep == 1) {
-        return '已复核，准备提交'
+        return "已复核，准备提交";
       } else {
-        let str = flow.lastCheckResult ? `(信息：${flow.lastCheckResult})` : ''
-        return flow.status + str
+        let str = flow.lastCheckResult ? `(信息：${flow.lastCheckResult})` : "";
+        return flow.status + str;
       }
-    }
+    },
   },
 };
 </script>
 <style lang="scss" scoped>
-.pages{
+.pages {
   text-align: center;
 }
 .recheckdata-class {
@@ -280,4 +306,3 @@ export default {
   }
 }
 </style>
-
