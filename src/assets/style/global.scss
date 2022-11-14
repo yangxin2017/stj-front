@@ -1,0 +1,124 @@
+@import "font.scss";
+// 科技风定制element-ui样式
+@import "selfElement.scss";
+@import "layout.scss";
+
+* {
+  margin: 0;
+  padding: 0;
+  // font-size: 14px;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #070e3d;
+  background-position: center !important;
+  background-size: cover !important;
+}
+
+.setbutton {
+  font-size: 26px;
+}
+
+.card-body {
+  height: 100%;
+  padding: 0 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.date-picker {
+  .el-input__icon {
+    width: 17px;
+    line-height: 22px !important;
+  }
+  .el-picker-panel {
+    position: absolute;
+    z-index: 99;
+  }
+  &.el-input--mini .el-input__inner {
+    padding: 0 0 0 23px !important;
+    height: 22px;
+    line-height: 22px;
+  }
+}
+
+.inp-text {
+  width: 150px;
+  border-radius: 5px;
+  padding: 0 0 0 5px;
+  height: 23px;
+  border: solid 1px #00bfff;
+  background: #004884;
+  color: #fff;
+}
+
+.el-table td.el-table__cell div{
+  white-space: nowrap;
+  font-size: 15px !important;
+}
+.el-table th.el-table__cell>.cell{
+  font-size: 16px !important;
+}
+
+.flash-txt{
+  animation: flash 3s infinite;
+}
+@keyframes flash {
+  0%, 50%, 100% {
+     opacity: 1;
+     text-shadow: 0 0 10px #fff;
+  }
+  25%, 75% {
+     opacity: 0;
+     text-shadow: 0 0 0px #fff;
+  }
+}
+
+@media screen and (min-width: 2560px) {
+  .date-picker {
+    .el-input__icon {
+      width: 22px;
+      line-height: 30px !important;
+    }
+    &.el-input--mini .el-input__inner {
+      padding: 0 0 0 22px !important;
+      height: 30px;
+      line-height: 30px;
+      font-size: 14px;
+    }
+  }
+}
+@media screen and (min-width: 3840px) {
+  .date-picker {
+    .el-input__icon {
+      width: 25px;
+      line-height: 35px !important;
+    }
+    &.el-input--mini .el-input__inner {
+      padding: 0 0 0 30px !important;
+      height: 35px;
+      line-height: 35px;
+      font-size: 16px;
+    }
+  }
+}
+
+.el-upload-list {
+  overflow: auto;
+  max-height: 100px;
+}
+
+@media screen and (max-width: 2560px) {
+  .setbutton {
+    font-size: 18px;
+  }
+}
+
+@media screen and (max-width: 1920px) {
+  .setbutton {
+    font-size: 14px;
+  }
+}

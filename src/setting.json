@@ -1,0 +1,11 @@
+{
+    "testing": false,
+    "power": 1,
+    "powerList": {
+        "1": "3840*1620",
+        "2": "1920*1080",
+        "3": "2560*1440"
+    },
+    "title": "北京市低碳出行碳普惠项目数据采集与减排量复核系统",
+    "title_en": "Data collection and emission reduction review system of Beijing low carbon travel carbon inclusive project"
+}
